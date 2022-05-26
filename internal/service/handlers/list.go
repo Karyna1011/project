@@ -7,7 +7,6 @@ import (
 	"gitlab.com/tokend/subgroup/project/internal/service/requests"
 	"gitlab.com/tokend/subgroup/project/resources"
 	"net/http"
-	"strconv"
 )
 
 func List(w http.ResponseWriter, r *http.Request) {
@@ -24,31 +23,33 @@ func List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := resources.PersonListResponse{
-		Data: newPeopleList(people),
-	}
+	response := newPeopleList(people, GetOffsetLinks(r, req.OffsetPageParams))
 
 	ape.Render(w, response)
 }
 
-func newPeopleList(people []data.Person) []resources.Person {
-	result := make([]resources.Person, len(people))
-	for i, person := range people {
-		result[i] = newPersonModel(person)
+func newPeopleList(models []data.Person, links *resources.Links) resources.PersonListResponse {
+	result := resources.PersonListResponse{
+		Data: make([]resources.Person, len(models)),
 	}
+
+	for i, item := range models {
+		result.Data[i] = newPersonModel(item).Data
+	}
+
+	result.Links = links
 	return result
 }
 
-func newPersonModel(person data.Person) resources.Person {
-	return resources.Person{
-		Key: resources.Key{
-			ID:   strconv.FormatInt(person.Id, 10),
-			Type: resources.PERSON,
-		},
-		Attributes: resources.PersonAttributes{
-			Name:      person.Name,
-			Completed: person.Completed,
-			Duration:  person.Duration,
+func newPersonModel(model data.Person) resources.PersonResponse {
+	return resources.PersonResponse{
+		Data: resources.Person{
+			Key: resources.NewKeyInt64(model.Id, resources.PERSON),
+			Attributes: resources.PersonAttributes{
+				Name:      model.Name,
+				Completed: model.Completed,
+				Duration:  model.Duration,
+			},
 		},
 	}
 }

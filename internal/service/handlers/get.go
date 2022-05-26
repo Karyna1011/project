@@ -5,23 +5,14 @@ import (
 	"gitlab.com/distributed_lab/ape"
 	"gitlab.com/distributed_lab/ape/problems"
 	"net/http"
-	"strconv"
 )
 
 func GetByIndex(w http.ResponseWriter, r *http.Request) {
-	idString := chi.URLParam(r, "id")
+	name := chi.URLParam(r, "name")
 
 	personQ := Person(r)
 
-	id, err := strconv.ParseInt(idString, 10, 64)
-
-	if err != nil {
-		Log(r).WithError(err).Error("failed to parse mission id")
-		ape.Render(w, problems.InternalError())
-		return
-	}
-
-	person, err := personQ.FilterById(id).Get()
+	person, err := personQ.FilterByName(name).Get()
 
 	if err != nil {
 		Log(r).WithError(err).Error("failed to get person")

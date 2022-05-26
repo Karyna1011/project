@@ -13,6 +13,8 @@ type PersonQ interface {
 	Insert(data Person) (Person, error)
 	Update(data Person) (Person, error)
 	FilterById(data int64) PersonQ
+	FilterByName(data string) PersonQ
+	Delete(data string) error
 }
 
 type Person struct {

@@ -7,7 +7,7 @@ import (
 )
 
 func Info(w http.ResponseWriter, r *http.Request) {
-	message := "It's our database"
+	message := "It's our database service"
 	if err := json.NewEncoder(w).Encode(message); err != nil {
 		Log(r).WithError(err).Error("error during writing message")
 		w.WriteHeader(http.StatusInternalServerError)

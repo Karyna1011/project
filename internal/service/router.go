@@ -23,7 +23,8 @@ func (s *service) router(cfg config.Config) chi.Router {
 	r.Route("/integrations/project", func(r chi.Router) {
 		r.Post("/add", handlers.Add)
 		r.Get("/list", handlers.List)
-		r.Get("/get/{id}", handlers.GetByIndex)
+		r.Get("/get/{name}", handlers.GetByIndex)
+		r.Delete("/delete/{name}", handlers.Delete)
 		r.Get("/info", handlers.Info)
 	})
 

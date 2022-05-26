@@ -84,3 +84,18 @@ func (d personQ) FilterById(Id int64) data.PersonQ {
 
 	return &d
 }
+
+func (d personQ) FilterByName(name string) data.PersonQ {
+	d.sql = d.sql.Where(squirrel.Eq{"name": name})
+
+	return &d
+}
+
+func (d *personQ) Delete(name string) error {
+	query := squirrel.Delete(tablePerson).Where(squirrel.Eq{"name": name})
+	err := d.db.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}

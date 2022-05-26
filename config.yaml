@@ -3,7 +3,7 @@ log:
   disable_sentry: true
 
 db:
-  url: postgres://karyna:karyna@localhost:5432/karyna?sslmode=disable
+  url: postgres://project:project@localhost:5434/project?sslmode=disable
 
 listener:
   addr: :8090 # TODO configure and rm this TODO
