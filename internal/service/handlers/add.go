@@ -8,6 +8,16 @@ import (
 	"net/http"
 )
 
+// Add godoc
+// @Summary      Add
+// @Description  Adds record
+// @Accept       json
+// @Produce      json
+// @Param        input body  requests.GatewayRequest true "Gets encoded data and sender's address"
+// @Success      200  {int}     http.StatusOK
+// @Failure      400  {object}  jsonapi.ErrorsPayload
+// @Failure      500  {object}  jsonapi.ErrorsPayload
+// @Router       /add [post]
 func Add(w http.ResponseWriter, r *http.Request) {
 	request, err := requests.NewPostGatewayRequest(r)
 	if err != nil {

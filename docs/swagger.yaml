@@ -1,0 +1,217 @@
+basePath: /project
+definitions:
+  jsonapi.ErrorObject:
+    properties:
+      code:
+        description: Code is an application-specific error code, expressed as a string
+          value.
+        type: string
+      detail:
+        description: Detail is a human-readable explanation specific to this occurrence
+          of the problem. Like title, this field’s value can be localized.
+        type: string
+      id:
+        description: ID is a unique identifier for this particular occurrence of a
+          problem.
+        type: string
+      meta:
+        additionalProperties: true
+        description: Meta is an object containing non-standard meta-information about
+          the error.
+        type: object
+      status:
+        description: Status is the HTTP status code applicable to this problem, expressed
+          as a string value.
+        type: string
+      title:
+        description: Title is a short, human-readable summary of the problem that
+          SHOULD NOT change from occurrence to occurrence of the problem, except for
+          purposes of localization.
+        type: string
+    type: object
+  jsonapi.ErrorsPayload:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/jsonapi.ErrorObject'
+        type: array
+    type: object
+  requests.GatewayRequest:
+    properties:
+      completed:
+        type: boolean
+      duration:
+        type: integer
+      name:
+        type: string
+    type: object
+  resources.Included:
+    type: object
+  resources.Links:
+    properties:
+      first:
+        type: string
+      last:
+        type: string
+      next:
+        type: string
+      prev:
+        type: string
+      self:
+        type: string
+    type: object
+  resources.Person:
+    properties:
+      attributes:
+        $ref: '#/definitions/resources.PersonAttributes'
+      id:
+        type: string
+      type:
+        type: string
+    type: object
+  resources.PersonAttributes:
+    properties:
+      completed:
+        type: boolean
+      duration:
+        type: integer
+      name:
+        type: string
+    type: object
+  resources.PersonListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/resources.Person'
+        type: array
+      included:
+        $ref: '#/definitions/resources.Included'
+      links:
+        $ref: '#/definitions/resources.Links'
+    type: object
+  resources.PersonResponse:
+    properties:
+      data:
+        $ref: '#/definitions/resources.Person'
+      included:
+        $ref: '#/definitions/resources.Included'
+    type: object
+host: localhost:9000
+info:
+  contact: {}
+  description: Lab#2
+  title: REST API PROJECT
+  version: "1.0"
+paths:
+  /add:
+    post:
+      consumes:
+      - application/json
+      description: Adds record
+      parameters:
+      - description: Gets encoded data and sender's address
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GatewayRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: int
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+      summary: Add
+  /get/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Get record by uuid
+      parameters:
+      - description: UUID of record
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+      summary: Delete
+    get:
+      consumes:
+      - application/json
+      description: Get record by uuid
+      parameters:
+      - description: UUID of record
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.PersonResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+      summary: GetByIndex
+  /info:
+    get:
+      consumes:
+      - application/json
+      description: Print info
+      produces:
+      - application/json
+      responses:
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+      summary: Info
+  /list:
+    get:
+      consumes:
+      - application/json
+      description: Get list of records
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/resources.PersonListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/jsonapi.ErrorsPayload'
+      summary: List
+swagger: "2.0"

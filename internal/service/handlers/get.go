@@ -7,6 +7,16 @@ import (
 	"net/http"
 )
 
+// GetByIndex godoc
+// @Summary      GetByIndex
+// @Description  Get record by uuid
+// @Accept       json
+// @Produce      json
+// @Param name  path string true "UUID of record"
+// @Success      200  {object}  resources.PersonResponse
+// @Failure      400  {object}  jsonapi.ErrorsPayload
+// @Failure      500  {object}  jsonapi.ErrorsPayload
+// @Router       /get/{name} [get]
 func GetByIndex(w http.ResponseWriter, r *http.Request) {
 	name := chi.URLParam(r, "name")
 

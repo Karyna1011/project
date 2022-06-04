@@ -9,6 +9,15 @@ import (
 	"net/http"
 )
 
+// List godoc
+// @Summary      List
+// @Description  Get list of records
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  resources.PersonListResponse
+// @Failure      400  {object}  jsonapi.ErrorsPayload
+// @Failure      500  {object}  jsonapi.ErrorsPayload
+// @Router       /list [get]
 func List(w http.ResponseWriter, r *http.Request) {
 	req, err := requests.NewGetPersonListRequest(r)
 	if err != nil {
